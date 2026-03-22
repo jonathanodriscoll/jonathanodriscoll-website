@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Jonathan O'Driscoll — Helping UK local businesses get found online"
+  description="Social media content, SEO blogs, and online presence audits for UK local businesses. Less than an agency. Better than DIY."
+>
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-20 lg:py-28">
+    <div class="max-w-2xl">
+      <p class="text-brand-blue font-semibold text-sm uppercase tracking-wide mb-4">Social media and SEO for UK local businesses</p>
+      <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
+        Your business deserves to be found online.
+      </h1>
+      <p class="text-xl text-gray-600 leading-relaxed mb-8">
+        I help UK local businesses build a real online presence — through researched social media content, SEO blog posts, and clear strategy. Agency quality. No agency price.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="/audit" class="bg-brand-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center">
+          Get your free audit
+        </a>
+        <a href="/services" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:border-gray-400 transition-colors text-center">
+          See what I offer
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof -->
+  <section class="bg-gray-50 py-14">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="text-sm text-gray-500 text-center mb-8 uppercase tracking-wide font-medium">Working with local businesses across the West Midlands and beyond</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+        <div>
+          <p class="text-3xl font-bold text-gray-900">30+</p>
+          <p class="text-gray-600 mt-1">Years in business and marketing</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-gray-900">UK</p>
+          <p class="text-gray-600 mt-1">Local business specialists</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-gray-900">2x</p>
+          <p class="text-gray-600 mt-1">SEO and social working together</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I do -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">What I do</h2>
+    <p class="text-gray-600 text-lg mb-12 max-w-xl">Most agencies charge thousands. Most freelancers give you generic AI posts. I do something different.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="p-6 border border-gray-200 rounded-xl">
+        <div class="text-brand-blue text-2xl mb-4">01</div>
+        <h3 class="font-bold text-lg mb-2">Online Presence Audit</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">A ranked action plan showing exactly where your business is invisible online and what to fix first. Clear, specific, actionable.</p>
+      </div>
+      <div class="p-6 border border-gray-200 rounded-xl">
+        <div class="text-brand-blue text-2xl mb-4">02</div>
+        <h3 class="font-bold text-lg mb-2">Social Media Content</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">A full month of platform-adapted posts, written in your brand voice, ready to schedule. LinkedIn, Instagram, Facebook, TikTok.</p>
+      </div>
+      <div class="p-6 border border-gray-200 rounded-xl">
+        <div class="text-brand-blue text-2xl mb-4">03</div>
+        <h3 class="font-bold text-lg mb-2">Authority Building</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">One SEO blog post plus 20 social posts derived from it. Your content compounds. Traffic builds. You become the go-to in your area.</p>
+      </div>
+    </div>
+    <div class="mt-8">
+      <a href="/services" class="text-brand-blue font-semibold hover:underline">See all services &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Blog preview -->
+  {posts.length > 0 && (
+    <section class="bg-gray-50 py-20">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="flex items-center justify-between mb-10">
+          <h2 class="text-3xl font-bold text-gray-900">Latest from the blog</h2>
+          <a href="/blog" class="text-brand-blue font-semibold hover:underline text-sm">All posts &rarr;</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <article class="bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-200 transition-colors">
+              <time class="text-xs text-gray-500 uppercase tracking-wide">
+                {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </time>
+              <h3 class="font-bold text-gray-900 mt-2 mb-3 leading-snug">
+                <a href={`/blog/${post.slug}`} class="hover:text-brand-blue transition-colors">
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Lead magnet CTA -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <div class="bg-brand-dark rounded-2xl p-10 lg:p-14 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Not sure where to start?</h2>
+      <p class="text-gray-300 text-lg mb-8 max-w-xl mx-auto">
+        Download the free Local Business Online Presence Audit guide. Work through it yourself or use it to brief your next content partner.
+      </p>
+      <a href="/audit" class="inline-block bg-white text-brand-dark px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors">
+        Download free — no sign-up needed
+      </a>
+    </div>
+  </section>
+</BaseLayout>

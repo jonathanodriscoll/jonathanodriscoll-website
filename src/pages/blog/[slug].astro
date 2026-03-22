@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<BaseLayout title={`${post.data.title} — Jonathan O'Driscoll`} description={post.data.description}>
+  <article class="max-w-3xl mx-auto px-6 py-16">
+    <div class="mb-10">
+      <a href="/blog" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Back to blog</a>
+    </div>
+
+    <header class="mb-10">
+      <time class="text-xs text-gray-500 uppercase tracking-wide">
+        {post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+      </time>
+      <h1 class="text-4xl font-bold text-gray-900 mt-3 mb-4 leading-tight">{post.data.title}</h1>
+      <p class="text-xl text-gray-600">{post.data.description}</p>
+    </header>
+
+    <div class="prose prose-lg prose-gray max-w-none
+      prose-headings:font-bold prose-headings:text-gray-900
+      prose-p:text-gray-700 prose-p:leading-relaxed
+      prose-a:text-brand-blue prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-gray-900
+      prose-ul:text-gray-700 prose-ol:text-gray-700
+      prose-li:leading-relaxed">
+      <Content />
+    </div>
+
+    <!-- CTA at bottom of every post -->
+    <div class="mt-16 bg-gray-50 rounded-2xl p-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">Want to know where your business stands?</h2>
+      <p class="text-gray-600 mb-6">Download the free Local Business Online Presence Audit guide and find out exactly what to fix first.</p>
+      <a href="/audit" class="inline-block bg-brand-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+        Get the free audit guide
+      </a>
+    </div>
+  </article>
+</BaseLayout>

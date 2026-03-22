@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage = '/og-default.png' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+  </head>
+  <body>
+    <header class="border-b border-gray-100">
+      <nav class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/" class="font-bold text-lg text-gray-900 hover:text-brand-blue transition-colors">
+          Jonathan O'Driscoll
+        </a>
+        <div class="flex items-center gap-6 text-sm font-medium text-gray-600">
+          <a href="/blog" class="hover:text-gray-900 transition-colors">Blog</a>
+          <a href="/services" class="hover:text-gray-900 transition-colors">Services</a>
+          <a href="/audit" class="bg-brand-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            Free Audit
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-100 mt-24">
+      <div class="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+        <p>&copy; {new Date().getFullYear()} Jonathan O'Driscoll. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="https://www.linkedin.com/in/johnmodriscoll/" target="_blank" rel="noopener" class="hover:text-gray-900 transition-colors">LinkedIn</a>
+          <a href="/blog" class="hover:text-gray-900 transition-colors">Blog</a>
+          <a href="/audit" class="hover:text-gray-900 transition-colors">Free Audit</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
